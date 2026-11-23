@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOKINI | Café del Barrio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+JP:wght@300;400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Configuración de paleta Japandi / Wabi-Sabi -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        washi: '#F7F4EF',
+                        washiDark: '#EFECE6',
+                        sumi: '#2C2A29',
+                        sumiLight: '#5C5855',
+                        clay: '#9E6B55',
+                        clayDark: '#825542',
+                        sand: '#D8CFC4',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        jp: ['"Noto Serif JP"', 'serif'],
+                    },
+                    letterSpacing: {
+                        widestPlus: '0.25em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F7F4EF;
+            color: #2C2A29;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .paper-texture {
+            background-image: radial-gradient(rgba(44, 42, 41, 0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Efecto hover interactivo con recuadro y transición */
+        .interactive-hover {
+            transition: all 0.3s ease;
+        }
+        .interactive-hover:hover {
+            border-color: #9E6B55;
+            background-color: rgba(158, 107, 85, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .vertical-jp {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+    </style>
+</head>
+<body class="paper-texture selection:bg-clay selection:text-washi">
+
+    <!-- NAVEGACIÓN FIJA SUPERIOR CENTRADA / DISCRETA -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-washi/90 backdrop-blur-md border-b border-sand/60">
+        <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#inicio" class="group flex items-baseline gap-2 focus:outline-none p-1 rounded-lg interactive-hover">
+                <span class="font-serif text-2xl tracking-[0.2em] font-medium text-sumi">
+                    OOKINI
+                </span>
+                <span class="font-jp text-xs text-clay/80 tracking-widest">おおきに</span>
+            </a>
+
+            <!-- Enlaces de navegación centrado/derecha -->
+            <nav class="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.2em] text-sumiLight font-medium">
+                <a href="#filosofia" class="hover:text-clay transition-colors py-1.5 px-3 rounded-md interactive-hover">Filosofía</a>
+                <a href="#carta" class="hover:text-clay transition-colors py-1.5 px-3 rounded-md interactive-hover">La Carta</a>
+                <a href="#visitanos" class="hover:text-clay transition-colors py-1.5 px-3 rounded-md interactive-hover">Visítanos</a>
+            </nav>
+
+            <!-- Botón menú móvil -->
+            <button id="mobile-menu-btn" aria-label="Abrir menú" class="md:hidden p-2 rounded-lg text-sumi interactive-hover focus:outline-none">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú desplegable móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-washi border-b border-sand px-6 py-6 space-y-3 text-center">
+            <a href="#filosofia" class="mobile-link block text-xs uppercase tracking-[0.2em] text-sumiLight hover:text-clay py-2 rounded-lg interactive-hover">Filosofía</a>
+            <a href="#carta" class="mobile-link block text-xs uppercase tracking-[0.2em] text-sumiLight hover:text-clay py-2 rounded-lg interactive-hover">La Carta</a>
+            <a href="#visitanos" class="mobile-link block text-xs uppercase tracking-[0.2em] text-sumiLight hover:text-clay py-2 rounded-lg interactive-hover">Visítanos</a>
+        </div>
+    </header>
+
+    <main class="text-center">
+        <!-- 1. HERO / PORTADA -->
+        <section id="inicio" class="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
+            <!-- Sello circular de fondo sutil -->
+            <div class="absolute pointer-events-none opacity-25">
+                <svg class="w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] text-sand" viewBox="0 0 200 200" fill="none">
+                    <circle cx="100" cy="100" r="88" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 3" />
+                </svg>
+            </div>
+
+            <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center space-y-6">
+                <!-- Sobretítulo -->
+                <div class="reveal inline-flex items-center justify-center gap-3 text-xs uppercase tracking-[0.28em] text-clay font-medium">
+                    <span class="w-5 h-px bg-clay/60"></span>
+                    <span>Café de Especialidad • Inspiración Kansai</span>
+                    <span class="w-5 h-px bg-clay/60"></span>
+                </div>
+
+                <!-- Título Principal -->
+                <div class="reveal delay-100 space-y-2">
+                    <p class="font-jp text-sm text-clay/80 tracking-[0.35em]">おおきに</p>
+                    <h1 class="font-serif text-6xl sm:text-7xl font-normal tracking-[0.18em] text-sumi leading-none">
+                        OOKINI
+                    </h1>
+                </div>
+
+                <!-- Subtítulo -->
+                <p class="reveal delay-200 text-base sm:text-lg text-sumiLight font-light leading-relaxed max-w-lg mx-auto">
+                    Dedicados a la extracción honesta y serena. Seleccionamos granos excepcionales para revelar su sabor más puro y una textura sedosa en cada taza.
+                </p>
+
+                <!-- Botón -->
+                <div class="reveal delay-300 pt-2">
+                    <a href="#carta" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl border border-sumi/30 text-xs uppercase tracking-[0.22em] text-sumi interactive-hover">
+                        <span>Explorar la Carta</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- LÍNEA DIVISORIA SUTIL -->
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-sand to-transparent"></div>
+        </div>
+
+        <!-- 2. FILOSOFÍA / ORIGEN -->
+        <section id="filosofia" class="py-24 sm:py-32 px-6">
+            <div class="max-w-2xl mx-auto flex flex-col items-center space-y-8">
+                <span class="reveal text-xs uppercase tracking-[0.25em] text-clay font-medium">01 — Filosofía</span>
+                <h2 class="reveal delay-100 font-serif text-3xl sm:text-4xl text-sumi font-normal leading-snug">
+                    La gratitud cotidiana de Kioto en cada vertido.
+                </h2>
+                
+                <!-- Ícono muy pequeño y sutil -->
+                <div class="reveal delay-150">
+                    <svg class="w-8 h-8 text-clay/70 mx-auto" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2">
+                        <path d="M32 10C32 10 20 24 20 33C20 39.6274 25.3726 45 32 45C38.6274 45 44 39.6274 44 33C44 24 32 10 32 10Z" />
+                        <path d="M14 52H50" stroke-linecap="round" />
+                    </svg>
+                </div>
+
+                <div class="reveal delay-200 space-y-5 text-sumiLight font-light leading-relaxed text-base">
+                    <p>
+                        En el dialecto tradicional de <strong class="font-medium text-sumi">Kansai</strong> —la región histórica que alberga a Kioto—, <em class="font-serif italic text-lg text-sumi">«Ookini»</em> significa <strong class="font-medium text-sumi">gracias</strong>. Es una expresión cálida que honra el tiempo, el oficio y el encuentro entre personas.
+                    </p>
+                    <p>
+                        En nuestra barra entendemos el café de especialidad bajo esa misma calma artesanal. Controlamos la temperatura, la molienda y el tiempo de contacto para lograr el equilibrio exacto entre <span class="text-sumi font-normal">claridad aromática</span> y <span class="text-sumi font-normal">textura envolvente</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LÍNEA DIVISORIA SUTIL -->
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-sand to-transparent"></div>
+        </div>
+
+        <!-- 3. EL MENÚ / LAS TRES EXPERIENCIAS -->
+        <section id="carta" class="py-24 sm:py-32 px-6 bg-washiDark/40">
+            <div class="max-w-5xl mx-auto flex flex-col items-center space-y-16">
+                
+                <!-- Encabezado -->
+                <div class="reveal max-w-xl mx-auto space-y-3">
+                    <span class="text-xs uppercase tracking-[0.25em] text-clay font-medium">02 — La Carta de Experiencias</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl text-sumi font-normal">Tres Formas de Disfrutar Ookini</h2>
+                    <p class="text-sm sm:text-base text-sumiLight font-light">
+                        Diseñadas para respetar los tiempos de cada método de extracción y garantizar la máxima calidad.
+                    </p>
+                </div>
+
+                <!-- Tarjetas de las 3 Modalidades (Centradas) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full items-stretch">
+
+                    <!-- TARJETA 1: PREPARACIONES ESPECIALES -->
+                    <article class="reveal delay-100 bg-washi border border-sand rounded-2xl p-8 flex flex-col justify-between shadow-[0_4px_20px_rgb(44,42,41,0.02)] interactive-hover text-center">
+                        <div class="space-y-6">
+                            <!-- Etiqueta superior -->
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-clay/10 text-clay text-[11px] uppercase tracking-[0.16em] font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-clay"></span>
+                                    Con Reserva
+                                </span>
+                            </div>
+
+                            <!-- Título y Descripción -->
+                            <div class="space-y-2">
+                                <h3 class="font-serif text-2xl text-sumi font-normal">Preparaciones Especiales</h3>
+                                <p class="text-xs text-sumiLight font-light leading-relaxed">
+                                    Extracciones de precisión ejecutadas al momento para resaltar notas florales y acidez limpia.
+                                </p>
+                            </div>
+
+                            <!-- Regla destacada pequeña -->
+                            <div class="p-3 rounded-xl bg-washiDark border border-sand/70 text-xs text-sumi">
+                                <span class="font-medium">Máximo 2 tazas por día</span> <span class="text-sumiLight">(bajo reserva)</span>
+                            </div>
+
+                            <!-- Métodos con recuadros Japandi -->
+                            <div class="space-y-3 pt-2">
+                                <!-- V60 -->
+                                <div class="p-3.5 rounded-xl border border-sand/80 bg-washi/80 interactive-hover flex items-center justify-between">
+                                    <span class="font-serif px-3 py-1 rounded-lg bg-sand/30 border border-sand/60 text-sumi text-lg">V60</span>
+                                    <div class="text-right">
+                                        <span class="font-serif text-2xl text-clay font-medium">$5</span>
+                                        <span class="block text-[10px] text-sumiLight">Vertido manual</span>
+                                    </div>
+                                </div>
+
+                                <!-- Kyoto Drip -->
+                                <div class="p-3.5 rounded-xl border border-sand/80 bg-washi/80 interactive-hover flex items-center justify-between">
+                                    <span class="font-serif px-3 py-1 rounded-lg bg-sand/30 border border-sand/60 text-sumi text-lg">Kyoto Drip</span>
+                                    <div class="text-right">
+                                        <span class="font-serif text-2xl text-clay font-medium">$7</span>
+                                        <span class="block text-[10px] text-sumiLight">Goteo en frío</span>
+                                    </div>
+                                </div>
+
+                                <!-- Siphon -->
+                                <div class="p-3.5 rounded-xl border border-sand/80 bg-washi/80 interactive-hover flex items-center justify-between">
+                                    <span class="font-serif px-3 py-1 rounded-lg bg-sand/30 border border-sand/60 text-sumi text-lg">Siphon</span>
+                                    <div class="text-right">
+                                        <span class="font-serif text-2xl text-clay font-medium">$8</span>
+                                        <span class="block text-[10px] text-sumiLight">Vacío al vapor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 mt-6 border-t border-sand/60 text-xs text-sumiLight tracking-widest uppercase">
+                            Cupo diario limitado
+                        </div>
+                    </article>
+
+                    <!-- TARJETA 2: PRENSA FRANCESA -->
+                    <article class="reveal delay-200 bg-washi border border-sand rounded-2xl p-8 flex flex-col justify-between shadow-[0_4px_20px_rgb(44,42,41,0.02)] interactive-hover text-center">
+                        <div class="space-y-6">
+                            <!-- Etiqueta superior -->
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sumi/5 text-sumi text-[11px] uppercase tracking-[0.16em] font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-sumi"></span>
+                                    Walk-In • Sin Reserva
+                                </span>
+                            </div>
+
+                            <!-- Título y Descripción -->
+                            <div class="space-y-2">
+                                <h3 class="font-serif text-2xl text-sumi font-normal">Prensa Francesa</h3>
+                                <p class="text-xs text-sumiLight font-light leading-relaxed">
+                                    Inmersión total que conserva los aceites naturales del grano, logrando un cuerpo completo y envolvente.
+                                </p>
+                            </div>
+
+                            <!-- Reglas destacadas -->
+                            <div class="p-3 rounded-xl bg-washiDark border border-sand/70 space-y-1.5 text-xs text-sumi">
+                                <p>• Sin necesidad de reserva</p>
+                                <p>• Sin límite de tazas por persona</p>
+                                <p>• Disponible hasta el cierre</p>
+                            </div>
+
+                            <!-- Recuadro del producto -->
+                            <div class="pt-4">
+                                <div class="p-4 rounded-xl border border-sand/80 bg-washi/80 interactive-hover flex items-center justify-between">
+                                    <span class="font-serif px-3 py-1 rounded-lg bg-sand/30 border border-sand/60 text-sumi text-lg">Prensa Francesa</span>
+                                    <div class="text-right">
+                                        <span class="font-serif text-3xl text-clay font-medium">$3</span>
+                                        <span class="text-[10px] text-sumiLight block">/ taza</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 mt-6 border-t border-sand/60 text-xs text-sumiLight tracking-widest uppercase">
+                            Acceso libre y continuo
+                        </div>
+                    </article>
+
+                    <!-- TARJETA 3: CATA SEMANAL -->
+                    <article class="reveal delay-300 bg-washi border border-sand rounded-2xl p-8 flex flex-col justify-between shadow-[0_4px_20px_rgb(44,42,41,0.02)] interactive-hover text-center">
+                        <div class="space-y-6">
+                            <!-- Etiqueta superior -->
+                            <div class="flex items-center justify-center gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-clay/10 text-clay text-[11px] uppercase tracking-[0.16em] font-medium">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-clay"></span>
+                                    Con Reserva
+                                </span>
+                            </div>
+
+                            <!-- Título y Descripción -->
+                            <div class="space-y-2">
+                                <h3 class="font-serif text-2xl text-sumi font-normal">Cata Semanal</h3>
+                                <p class="text-xs text-sumiLight font-light leading-relaxed">
+                                    Sesión íntima y guiada para explorar distintos orígenes y perfiles sensoriales mediante múltiples degustaciones.
+                                </p>
+                            </div>
+
+                            <!-- Reglas destacadas -->
+                            <div class="p-3 rounded-xl bg-washiDark border border-sand/70 space-y-1.5 text-xs text-sumi">
+                                <p>• 1 única sesión por semana</p>
+                                <p>• Estricto de 8 cupos por cata</p>
+                                <p>• Incluye múltiples degustaciones</p>
+                            </div>
+
+                            <!-- Recuadro del producto -->
+                            <div class="pt-4">
+                                <div class="p-4 rounded-xl border border-sand/80 bg-washi/80 interactive-hover flex items-center justify-between">
+                                    <span class="font-serif px-3 py-1 rounded-lg bg-sand/30 border border-sand/60 text-sumi text-lg">Cata Semanal</span>
+                                    <div class="text-right">
+                                        <span class="font-serif text-3xl text-clay font-medium">$25</span>
+                                        <span class="text-[10px] text-sumiLight block">/ persona</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 mt-6 border-t border-sand/60 text-xs text-sumiLight tracking-widest uppercase">
+                            8 lugares disponibles
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- LÍNEA DIVISORIA SUTIL -->
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="h-px w-full bg-gradient-to-r from-transparent via-sand to-transparent"></div>
+        </div>
+
+        <!-- 4. VISÍTANOS & FOOTER LIMPIO -->
+        <footer id="visitanos" class="py-24 px-6">
+            <div class="max-w-2xl mx-auto flex flex-col items-center space-y-10 text-center">
+                
+                <div class="space-y-3">
+                    <div class="flex items-baseline justify-center gap-2">
+                        <span class="font-serif text-3xl tracking-[0.2em] text-sumi">OOKINI</span>
+                        <span class="font-jp text-xs text-clay">おおきに</span>
+                    </div>
+                    <p class="text-sm text-sumiLight font-light max-w-md mx-auto">
+                        Gracias por detener el ritmo del día para compartir una taza con nosotros en nuestra barra.
+                    </p>
+                </div>
+
+                <!-- Horarios de Barra -->
+                <div class="p-6 rounded-2xl bg-washiDark/60 border border-sand/80 space-y-2 w-full max-w-sm interactive-hover">
+                    <h4 class="text-xs uppercase tracking-[0.22em] text-clay font-medium mb-3">Horarios de Barra</h4>
+                    <p class="text-xs text-sumiLight"><span class="text-sumi font-medium">Martes a Viernes:</span> 08:00 — 19:00</p>
+                    <p class="text-xs text-sumiLight"><span class="text-sumi font-medium">Sábados:</span> 09:00 — 20:00</p>
+                    <p class="text-xs text-sumiLight"><span class="text-sumi font-medium">Domingos:</span> Sesión de Cata Semanal</p>
+                </div>
+
+                <!-- Cierre inferior -->
+                <div class="pt-6 border-t border-sand/60 w-full space-y-3">
+                    <p class="font-serif italic text-base text-sumi/90">«Ookini — Gracias por su visita»</p>
+                    <p class="text-xs text-sumiLight/80">© <span id="year"></span> OOKINI — Café de Especialidad. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Toggle menú móvil
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Intersection Observer para revelar elementos
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        });
+    </script>
+</body>
+</html>
